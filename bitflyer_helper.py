@@ -7,7 +7,6 @@ from bitflyer_tools import ChildOrder, ProductCode, ChildOrderType, Side, TimeIn
 from requests.adapters import HTTPAdapter
 
 BASE_URL = "https://api.bitflyer.jp{0}"
-
 error_limit = 10
 
 
@@ -71,34 +70,29 @@ class BitflyerHelper:
         endpoint = "https://api.cryptowat.ch/markets/bitflyer/btcfxjpy/ohlc?" \
                    "periods={0}&after={1}&before={2}".format(str(period), str(after), str(before))
         response = self.get_request(endpoint)
-        print(endpoint)
         return response
 
     # マーケットの一覧を取得
     def get_markets(self):
         response = self.get_request("/v1/getmarkets").json()
-        # print(response)
         return response
 
     # 板情報を取得
     def get_board(self, product_code: ProductCode):
         params = {"product_code": product_code.value}
         response = self.get_request("/v1/getboard", params=params).json()
-        # print(response)
         return response
 
     # Tickerを取得
     def get_ticker(self, product_code: ProductCode):
         params = {"product_code": product_code.value}
         response = self.get_request("/v1/getticker", params=params).json()
-        # print(response)
         return response
 
     # 約定履歴
     def get_executions(self, product_code: ProductCode):
         params = {"product_code": product_code.value}
         response = self.get_request("/v1/getexecutions", params=params).json()
-        # print(response)
         return response
 
     # 板の状態
@@ -111,14 +105,12 @@ class BitflyerHelper:
     def get_health(self, product_code: ProductCode):
         params = {"product_code": product_code.value}
         response = self.get_request("/v1/gethealth", params=params).json()
-        # print(response)
         return response
 
     # チャットの取得
     def get_chats(self, from_date: str=None):
         params = {}
         response = self.get_request("/v1/getchats", params=params).json()
-        # print(response)
         return response
 
     # APIキーの権限を取得
@@ -128,7 +120,6 @@ class BitflyerHelper:
         body = ""
         headers = self.create_private_header(method=method, endpoint=endpoint, body=body)
         response = self.get_request(endpoint=endpoint, params=body, headers=headers).json()
-        # print(response)
         return response
 
     # 資産残高を取得
@@ -138,7 +129,6 @@ class BitflyerHelper:
         body = ""
         headers = self.create_private_header(method=method, endpoint=endpoint, body=body)
         response = self.get_request(endpoint=endpoint, params=body, headers=headers).json()
-        # print(response)
         return response
 
     # 証拠金の状態を取得
@@ -148,7 +138,7 @@ class BitflyerHelper:
         body = ""
         headers = self.create_private_header(method=method, endpoint=endpoint, body=body)
         response = self.get_request(endpoint=endpoint, params=body, headers=headers).json()
-        print(response)
+        return response
 
     # 通貨別の証拠金の数量を取得
     def get_collateralaccounts(self):
@@ -157,7 +147,6 @@ class BitflyerHelper:
         body = ""
         headers = self.create_private_header(method=method, endpoint=endpoint, body=body)
         response = self.get_request(endpoint=endpoint, params=body, headers=headers).json()
-        # print(response)
         return response
 
     # 新規注文を出す
@@ -183,7 +172,6 @@ class BitflyerHelper:
         body = json.dumps(body)
         headers = self.create_private_header(method=method, endpoint=endpoint, body=body)
         response = self.post_request(endpoint=endpoint, params=body, headers=headers)
-        print(response)
         return response
 
     # 新規の親注文を出す(特殊注文)
@@ -202,9 +190,8 @@ class BitflyerHelper:
         method = "GET"
         endpoint = "/v1/me/getchildorders?product_code={}".format(product_code.value)
         headers = self.create_private_header(method=method, endpoint=endpoint, body="")
-        response = self.get_request(endpoint=endpoint, headers=headers)
-        # print(response.json())
-        return response.json()
+        response = self.get_request(endpoint=endpoint, headers=headers).json()
+        return response
 
     # 建玉の一覧を取得
     def get_positions(self, product_code: ProductCode):
@@ -212,7 +199,6 @@ class BitflyerHelper:
         endpoint = "/v1/me/getpositions?product_code={}".format(product_code.value)
         headers = self.create_private_header(method=method, endpoint=endpoint, body="")
         response = self.get_request(endpoint=endpoint, headers=headers)
-        print(response)
         if response.status_code == 200:
             return response.json()
         else:
