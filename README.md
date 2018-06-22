@@ -6,6 +6,14 @@
 pip3 install pubnub pandas
 ```
 
+- Need to create `./settings.ini`
+```ini
+[bitflyer]
+
+API_KEY = api_key
+API_SECRET = api_secret
+```
+
 ## Usage
 
 ```sh
